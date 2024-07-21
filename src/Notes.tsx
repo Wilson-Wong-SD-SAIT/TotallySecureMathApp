@@ -1,9 +1,15 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, SafeAreaView, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+/* a.	Modify the app to store sensitive data (e.g., API keys, access tokens) using appropriate encryption techniques and secure storage methods. 
+import AsyncStorage from '@react-native-async-storage/async-storage'; */
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 import Note from './components/Note';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRootStackParamList } from './App';
+
+
 
 export interface INote {
 	title: string;
@@ -47,14 +53,23 @@ export default class Notes extends React.Component<TProps, IState> {
 	}
 
 	private async getStoredNotes(): Promise<INote[]> {
-		const suffix = this.props.route.params.user.username + '-' + this.props.route.params.user.password;
+		const suffix = this.props.route.params.user.username + '-' + this.props.route.params.user.password
 
-		const value = await AsyncStorage.getItem('notes-' + suffix);
+		/* a.	Modify the app to store sensitive data (e.g., API keys, access tokens) using appropriate encryption techniques and secure storage methods. 
+				const value = await AsyncStorage.getItem('notes-' + suffix);
 
 		if (value !== null) {
 			return JSON.parse(value);
 		} else {
 			return [];
+		}
+			*/
+		try {
+			const value = await EncryptedStorage.getItem('notes-' + suffix);
+			return value ? JSON.parse(value) : [];
+		} catch (error) {
+			console.error('Error retrieving data securely', error);
+			throw(error);
 		}
 	}
 
@@ -62,8 +77,16 @@ export default class Notes extends React.Component<TProps, IState> {
 		const suffix = this.props.route.params.user.username + '-' + this.props.route.params.user.password;
 
 		const jsonValue = JSON.stringify(notes);
-		await AsyncStorage.setItem('notes-' + suffix, jsonValue);
+		/* a.	Modify the app to store sensitive data (e.g., API keys, access tokens) using appropriate encryption techniques and secure storage methods. 
+		await AsyncStorage.setItem('notes-' + suffix, jsonValue);*/
+		try {
+			await EncryptedStorage.setItem('notes-' + suffix, jsonValue);
+		} catch (error) {
+			console.error('Error storing data securely', error);
+			throw(error);
+		}
 	}
+
 
 	private onNoteTitleChange(value: string) {
 		this.setState({ newNoteTitle: value });
