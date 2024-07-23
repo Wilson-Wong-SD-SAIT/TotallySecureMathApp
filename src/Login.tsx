@@ -2,6 +2,9 @@ import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRootStackParamList } from './App';
+/* b.	Implement secure authentication practices to address any improper authentication vulnerabilities. */
+import { firebase_auth } from '../firebaseConfig';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
 
 export interface IUser {
 	username: string;
@@ -17,7 +20,7 @@ type TProps = NativeStackScreenProps<TRootStackParamList, 'Login'> & IProps;
 export default function Login(props: TProps) {
 	const [username, setUsername] = React.useState('');
 	const [password, setPassword] = React.useState('');
-
+	/* b.	Implement secure authentication practices to address any improper authentication vulnerabilities. 
 	const users: IUser[] = [
 		{ username: 'joe', password: 'secret' },
 		{ username: 'bob', password: 'password' },
@@ -41,6 +44,33 @@ export default function Login(props: TProps) {
 		}
 	}
 
+	*/
+	const auth = firebase_auth;
+	const login = async() => {
+		try {
+			const response = await signInWithEmailAndPassword(auth, username, password);
+			if(response) {
+				let foundUser: IUser | false = false;
+				foundUser = { username: username, password: password };
+				props.onLogin(foundUser);
+			}else {
+				Alert.alert('Error', 'Username or password is invalid.');
+			}
+		} catch (error) {
+			console.error('Error authenticate securely', error);
+			throw(error);
+		}
+	}
+	const signup = async() => {
+		try {
+			const response = await createUserWithEmailAndPassword(auth, username, password);
+			console.log(response);
+		} catch (error) {
+			console.error('Error authenticate securely', error);
+			throw(error);
+		}
+	}
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Login</Text>
@@ -57,6 +87,7 @@ export default function Login(props: TProps) {
 				placeholder="Password"
 			/>
 			<Button title="Login" onPress={login} />
+			<Button title="Sign Up" onPress={signup} />
 		</View>
 	);
 };
