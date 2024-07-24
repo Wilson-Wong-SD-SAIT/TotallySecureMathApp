@@ -11,7 +11,13 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Note from './components/Note';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRootStackParamList } from './App';
+/******************************************
+ * Group 11 - Lab 3 Cross-Platform Security
+ * Authentication Enhancement
+ * Add Logout logic
+ * ****************************************/
 import { getAuth } from 'firebase/auth';
+/*****************************************/
 
 export interface INote {
 	title: string;
@@ -143,6 +149,12 @@ export default class Notes extends React.Component<TProps, IState> {
 		});
 	}
 
+	/******************************************
+	 * Group 11 - Lab 3 Cross-Platform Security
+	 * Authentication Enhancement
+	 * Add Logout logic
+	 * <Button title="Logout" onPress={this.handleLogout} />
+	 * ****************************************/
 	private async handleLogout() {
 		try {
             const auth = getAuth();
@@ -152,6 +164,7 @@ export default class Notes extends React.Component<TProps, IState> {
             console.error('Error:', (error as Error).message);
         }
 	}
+	/******************************************/
 
 	public render() {
 		return (
