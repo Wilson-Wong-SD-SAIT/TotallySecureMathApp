@@ -1,15 +1,10 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, SafeAreaView, ScrollView } from 'react-native';
-
-/* a.	Modify the app to store sensitive data (e.g., API keys, access tokens) using appropriate encryption techniques and secure storage methods. 
-import AsyncStorage from '@react-native-async-storage/async-storage'; */
-import EncryptedStorage from 'react-native-encrypted-storage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Note from './components/Note';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRootStackParamList } from './App';
-
-
+import { getAuth } from 'firebase/auth';
 
 export interface INote {
 	title: string;
@@ -53,23 +48,14 @@ export default class Notes extends React.Component<TProps, IState> {
 	}
 
 	private async getStoredNotes(): Promise<INote[]> {
-		const suffix = this.props.route.params.user.username + '-' + this.props.route.params.user.password
+		const suffix = this.props.route.params.user.username + '-' + this.props.route.params.user.password;
 
-		/* a.	Modify the app to store sensitive data (e.g., API keys, access tokens) using appropriate encryption techniques and secure storage methods. 
-				const value = await AsyncStorage.getItem('notes-' + suffix);
+		const value = await AsyncStorage.getItem('notes-' + suffix);
 
 		if (value !== null) {
 			return JSON.parse(value);
 		} else {
 			return [];
-		}
-			*/
-		try {
-			const value = await EncryptedStorage.getItem('notes-' + suffix);
-			return value ? JSON.parse(value) : [];
-		} catch (error) {
-			console.error('Error retrieving data securely', error);
-			throw(error);
 		}
 	}
 
@@ -77,16 +63,8 @@ export default class Notes extends React.Component<TProps, IState> {
 		const suffix = this.props.route.params.user.username + '-' + this.props.route.params.user.password;
 
 		const jsonValue = JSON.stringify(notes);
-		/* a.	Modify the app to store sensitive data (e.g., API keys, access tokens) using appropriate encryption techniques and secure storage methods. 
-		await AsyncStorage.setItem('notes-' + suffix, jsonValue);*/
-		try {
-			await EncryptedStorage.setItem('notes-' + suffix, jsonValue);
-		} catch (error) {
-			console.error('Error storing data securely', error);
-			throw(error);
-		}
+		await AsyncStorage.setItem('notes-' + suffix, jsonValue);
 	}
-
 
 	private onNoteTitleChange(value: string) {
 		this.setState({ newNoteTitle: value });
@@ -94,7 +72,7 @@ export default class Notes extends React.Component<TProps, IState> {
 
 	private onNoteEquationChange(value: string) {
 		this.setState({ newNoteEquation: value });
-	}
+	}	
 
 	private addNote() {
 		const note: INote = {
@@ -102,10 +80,28 @@ export default class Notes extends React.Component<TProps, IState> {
 			text: this.state.newNoteEquation
 		};
 
-		if (note.title === '' || note.text === '') {
+		/******************************************
+		 * Group 11 - Lab 3 Cross-Platform Security
+		 * Fix Vulnerability for Input Validation	
+		 * Check trimmed value		
+		 * ****************************************/
+		//if (note.title === '' || note.text === '') {
+		if (note.title.trim() === '' || note.text.trim() === '') {
 			Alert.alert('Error', 'Title and equation cannot be empty.');
 			return;
 		}
+		/******************************************/
+
+		/******************************************
+		 * Group 11 - Lab 3 Cross-Platform Security
+		 * Fix Vulnerability for Input Validation	
+		 * Check if user input a math equation with digit and operands		
+		 * ****************************************/
+		if (!/^[\d+\-*/().^]+$/.test(note.text.trim())) {
+			Alert.alert('Please input a math equation, e.g. 1+2');
+			return;
+		}
+		/******************************************/
 
 		this.setState({ 
 			notes: this.state.notes.concat(note),
@@ -114,11 +110,22 @@ export default class Notes extends React.Component<TProps, IState> {
 		});
 	}
 
+	private async handleLogout() {
+		try {
+            const auth = getAuth();
+            await auth.signOut();            
+			this.props.navigation.navigate('Login');
+        } catch (error) {
+            console.error('Error:', (error as Error).message);
+        }
+	}
+
 	public render() {
 		return (
 			<SafeAreaView>
 				<ScrollView contentInsetAdjustmentBehavior="automatic">
 					<View style={styles.container}>
+						<Button title="Logout" onPress={this.handleLogout} />
 						<Text style={styles.title}>
 							{'Math Notes: ' + this.props.route.params.user.username}
 						</Text>
@@ -158,6 +165,7 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: 'bold',
 		marginBottom: 20,
+		marginTop: 10
 	},
 	titleInput: {
 		borderWidth: 1,
