@@ -25,6 +25,7 @@ Using static credentials and client-side validation for improper user authentica
 Due to this approach's susceptibility to replay attacks and credential theft, unauthorized users may access the program without the necessary authentication.
 ### 2.3 Security Assessment of the Totally Security Math App
 Password field is not masked
+
 ![Image05](https://raw.githubusercontent.com/cathysunkc/public/main/Security/image005.png)
 ### 2.4 Security Measure Implemented and Why it is Important
 Password field is now masked and linked with firebase:
