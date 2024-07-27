@@ -1,9 +1,9 @@
 # ITSC302-B Software Security
 ### Lab 3 – Cross-Platform Security (Group 11)  
 
-Wong Ping Lun, Wilson
-Yuen Ki Fung, Harry
-Sun King Chung, Cathy
+- Wong Ping Lun, Wilson
+- Yuen Ki Fung, Harry
+- Sun King Chung, Cathy
 
 # 1. Secure Data Storage
 ### 1.1 Vulnerability Description
