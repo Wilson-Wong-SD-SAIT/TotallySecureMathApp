@@ -121,7 +121,7 @@ Improper error handling with vague message:
 ![Image40](https://raw.githubusercontent.com/cathysunkc/public/main/Security/image040.png)
 
 ### 5.4 Security Measure Implemented and Why it is Important
-Firebase keys for login are saved in .env files, values are mapped with keys and can separate from application code:
+Firebase keys for login are saved in .env files, values are mapped with keys and can separate from application code: 
 
 ![Image41](https://raw.githubusercontent.com/cathysunkc/public/main/Security/image041.png)
 
