@@ -49,11 +49,9 @@ The app should avoid using eval() function, because eval() function allows hacke
 
 ![Image12](https://raw.githubusercontent.com/cathysunkc/public/main/Security/image012.png)
 
-The original test result shows the app was accepting function string, for example
+The original test result shows the app was accepting function string as input and the function can be executed after clicking the “EVALUATE” button, for example:
 
-var bar = 3;var baz = 1;function addStuff() {  return bar + baz;}addStuff(); 
-
-as input and the function can be executed after clicking the “EVALUATE” button:
+var bar = 3;var baz = 1;function addStuff() { return bar + baz;}addStuff(); 
 
 ![Image14](https://raw.githubusercontent.com/cathysunkc/public/main/Security/image014.png)
 
