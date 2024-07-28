@@ -130,19 +130,19 @@ Error handling in try and catch block with precise message replied:
 
 Storing Firebase keys in .env files separates sensitive data from the application code, making it less accessible and more secure. Implementing proper error handling with specific messages helps in identifying and addressing issues accurately, improving both security and the overall user experience.
 
-### 6. Reflection
+# 6. Reflection
 Several serious vulnerabilities were found and fixed during the Totally Security Math App's security update, greatly enhancing the app's security. 
-##### 6.1 Secure Data Storage 
+### 6.1 Secure Data Storage 
 Passwords and other sensitive information were initially kept in plain text, which made it simple for hackers to read if the device was compromised. We made sure that even in the event that data is accessed, it cannot be decrypted without the hash key by utilizing Firebase to safely store hashed passwords. This modification emphasizes how crucial safe data storage procedures are for safeguarding private data. 
-##### 6.2 Authentication Enhancement 
+### 6.2 Authentication Enhancement 
 The app originally used static credentials and client-side validation, which are vulnerable to replay attacks and credential theft. We improved security by implementing dynamic server-side authentication and masking the password field. This ensures that user identities are securely verified, preventing unauthorized access. This demonstrates the need for robust authentication mechanisms to safeguard user data. 
-##### 6.3 Code Injection Prevention 
+### 6.3 Code Injection Prevention 
 User input was previously processed without proper validation, leaving the app vulnerable to code injection attacks. We mitigated this risk by avoiding the use of functions like eval() and enforcing strict input validation using math.evaluate(). This prevents malicious code from altering data or causing application crashes, emphasizing the necessity of secure coding practices to prevent injection attacks. 
-##### 6.4 Input Validation 
+### 6.4 Input Validation 
 One serious security vulnerability was improper input handling. Through the use of thorough input validation, we made sure that only secure, correctly formed data is handled. The significance of thorough input validation is highlighted by the necessity of this step in averting attacks that take advantage of unvalidated inputs. 
-##### 6.5 Secure Coding Practices 
+### 6.5 Secure Coding Practices 
 Adopting secure coding practices was essential throughout this project. By avoiding hardcoding sensitive information, implementing proper error handling, and conducting regular security audits, we improved the app's security and maintainability. This highlights the importance of continuous security best practices in developing resilient applications. 
-##### Conclusion 
+### Conclusion 
 The security improvements made to the Totally Security Math App have significantly strengthened its defense against various threats. By addressing vulnerabilities in data storage, authentication, code injection, and input validation, we have created a more secure and reliable application. This project has demonstrated the importance of proactive security measures and ongoing assessments to maintain a secure application environment. 
 
 ### 7. Modules Required to Execute the Updated Application
